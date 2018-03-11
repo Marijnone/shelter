@@ -30,12 +30,9 @@ function all(req, res) {
 
   /* Use the following to support just HTML:  */
   res.render('list.ejs', Object.assign({}, result, helpers))
-
+  
   /* Support both a request for JSON and a request for HTML  */
-  // res.format({
-  //   json: () => res.json(result),
-  //   html: () => res.render('list.ejs', Object.assign({}, result, helpers))
-  // })
+  
 }
 
 function dieren(req, res) {
@@ -43,19 +40,23 @@ function dieren(req, res) {
   var id = req.params.id
   var anid
 
-  try {
+  try { //function to make sure that if the url contains anything but a number it throws an 404
     var anid = db.has(id)
   } catch (error) {
     notFound(400,res)
   }
   if (anid){
-
-  res.render('detail.ejs', {data: db.all()})
+    var getId = {data: db.get(id)}
+     res.format({
+     json: () => res.json(getId),
+     html: () => res.render('details.ejs', Object.assign({}, getId, helpers))
+   })
+    
   } else{
     notFound(404,res)
   }
  }
-// Function to bundle errors and pass them to the error.ejs
+// Function to bundle errors and then error.ejs sees what kind of error trough the first parameter
  function notFound(error, res){
    var errorObject = {
      errors: [{
