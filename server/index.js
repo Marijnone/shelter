@@ -49,7 +49,7 @@ function dieren(req, res) {
     var getId = {data: db.get(id)}
      res.format({
      json: () => res.json(getId),
-     html: () => res.render('details.ejs', Object.assign({}, getId, helpers))
+     html: () => res.render('detail.ejs', Object.assign({}, getId, helpers))
    })
     
   } else{
