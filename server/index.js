@@ -73,16 +73,17 @@ function dieren(req, res) {
    var id = req.params.id
    try {
      db.remove(id)
+     res.status(204)
    } catch (error) {
      if (db.removed(id)) {
-      res.status(202,res)
-     }
+      res.status(410).json({message: 'That Animal has been removed 🐈'})
+    }
      else{
        notFound(404,res)
      }
        }
    }
- }
+ 
 
 
 
