@@ -16,7 +16,9 @@ module.exports = express()
   .get('/', all)
   /* TODO: Other HTTP methods. */
   // .post('/', add)
-  // .get('/:id', get)
+   .get('/:id',animals)
+
+  
   // .put('/:id', set)
   // .patch('/:id', change)
   // .delete('/:id', remove)
@@ -24,6 +26,7 @@ module.exports = express()
 
 function all(req, res) {
   var result = {errors: [], data: db.all()}
+
 
   /* Use the following to support just HTML:  */
   res.render('list.ejs', Object.assign({}, result, helpers))
@@ -34,3 +37,7 @@ function all(req, res) {
   //   html: () => res.render('list.ejs', Object.assign({}, result, helpers))
   // })
 }
+
+function animals(req, res) {
+  res.render('detail.ejs', {data: db.all()})
+ }
