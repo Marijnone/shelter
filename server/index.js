@@ -10,30 +10,32 @@ module.exports = express()
   .set('views', 'view')
   .use(express.static('static'))
   .use('/image', express.static('db/image'))
-  
-  
+
+
   // TODO: Serve the images in `db/image` on `/image`.
   .get('/', all)
   /* TODO: Other HTTP methods. */
   // .post('/', add)
    .get('/:id',dieren)
 
-  
+
   // .put('/:id', set)
   // .patch('/:id', change)
-  // .delete('/:id', remove)
+  .delete('/:id', remove)
   .listen(1902)
 
-function all(req, res) {
-  var result = {errors: [], data: db.all()}
+  function all(req, res) {
+    var result = {
+      errors: [],
+      data: db.all()
+    }
+    /* Support both a request for JSON and a request for HTML  */
+    res.format({
+      json: () => res.json(result),
+      html: () => res.render('list.ejs', Object.assign({}, result, helpers))
+    })
+  }
 
-
-  /* Use the following to support just HTML:  */
-  res.render('list.ejs', Object.assign({}, result, helpers))
-  
-  /* Support both a request for JSON and a request for HTML  */
-  
-}
 
 function dieren(req, res) {
   console.log(req.params.id)
@@ -51,7 +53,7 @@ function dieren(req, res) {
      json: () => res.json(getId),
      html: () => res.render('detail.ejs', Object.assign({}, getId, helpers))
    })
-    
+
   } else{
     notFound(404,res)
   }
@@ -67,5 +69,20 @@ function dieren(req, res) {
    res.status(error).render('error.ejs',errorObject)
  }
 
+ function remove(req, res){ //Function to remove sweet animals
+   var id = req.params.id
+   try {
+     db.remove(id)
+   } catch (error) {
+     if (db.removed(id)) {
+      res.status(202,res)
+     }
+     else{
+       notFound(404,res)
+     }
+       }
+   }
+ }
 
- 
+
+
