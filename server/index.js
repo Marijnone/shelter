@@ -16,7 +16,7 @@ module.exports = express()
   .get('/', all)
   /* TODO: Other HTTP methods. */
   // .post('/', add)
-   .get('/:id',animals)
+   .get('/:id',dieren)
 
   
   // .put('/:id', set)
@@ -38,7 +38,7 @@ function all(req, res) {
   // })
 }
 
-function animals(req, res) {
+function dieren(req, res) {
   console.log(req.params.id)
   var id = req.params.id
   var anid
@@ -46,7 +46,7 @@ function animals(req, res) {
   try {
     var anid = db.has(id)
   } catch (error) {
-    notFound(error,res)
+    notFound(400,res)
   }
   if (anid){
 
@@ -63,7 +63,8 @@ function animals(req, res) {
        title: error
      }]
    }
+   res.status(error).render('error.ejs',errorObject)
  }
- res.status(error).render('error.ejs',errorObject)
 
- }
+
+ 
