@@ -39,5 +39,31 @@ function all(req, res) {
 }
 
 function animals(req, res) {
+  console.log(req.params.id)
+  var id = req.params.id
+  var anid
+
+  try {
+    var anid = db.has(id)
+  } catch (error) {
+    notFound(error,res)
+  }
+  if (anid){
+
   res.render('detail.ejs', {data: db.all()})
+  } else{
+    notFound(404,res)
+  }
+ }
+// Function to bundle errors and pass them to the error.ejs
+ function notFound(error, res){
+   var errorObject = {
+     errors: [{
+       id: error,
+       title: error
+     }]
+   }
+ }
+ res.status(error).render('error.ejs',errorObject)
+
  }
