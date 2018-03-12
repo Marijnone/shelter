@@ -15,11 +15,13 @@ module.exports = express()
   .use('/image', express.static('db/image'))
   .post('/', form)
   .get('/form',form)
+
+
   
   // TODO: Serve the images in `db/image` on `/image`.
   .get('/', all)
   /* TODO: Other HTTP methods. */
-  // .post('/', add)
+  .post('/', add)
   .get('/:id', dieren)
 
 
@@ -94,7 +96,7 @@ function remove(req, res) { //Function to remove sweet animals
 }
 
 function form(req, res) {
-  res.render('form.html')
+  res.render('form.ejs')
 }
 
 function add(req, res) {
@@ -113,11 +115,15 @@ function add(req, res) {
         weight:req.body.weight,
         intake:req.body.intake
   })
-}
+
 try {
   db.add(input) //add the inputed data to the db
 } catch (error) {
-  console.log(error);
-  res.status(442)
+  console.log(error)
+    res.status(422)
   
+}
+
+console.log(req.body);
+
 }
