@@ -13,7 +13,7 @@ module.exports = express()
   .use(express.static('static'))
   .use(bodyParser.urlencoded({extended:true}))
   .use('/image', express.static('db/image'))
-  .post('/', form)
+  // .post('/', form)
   .get('/form',form)
   .get('/dier/:id', dieren) //thanks to Rijk van Zanten 
   .get('/', all)
@@ -22,7 +22,7 @@ module.exports = express()
   // TODO: Serve the images in `db/image` on `/image`.
 
   /* TODO: Other HTTP methods. */
-  // .post('/', add)
+   .post('/', add)
   
 
 
