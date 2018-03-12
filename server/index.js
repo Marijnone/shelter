@@ -15,14 +15,15 @@ module.exports = express()
   .use('/image', express.static('db/image'))
   .post('/', form)
   .get('/form',form)
-
-
-  
-  // TODO: Serve the images in `db/image` on `/image`.
+  .get('/dier/:id', dieren) //thanks to Rijk van Zanten 
   .get('/', all)
+ 
+
+  // TODO: Serve the images in `db/image` on `/image`.
+
   /* TODO: Other HTTP methods. */
-  .post('/', add)
-  .get('/:id', dieren)
+  // .post('/', add)
+  
 
 
   // .put('/:id', set)
