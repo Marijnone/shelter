@@ -16,7 +16,7 @@ module.exports = express()
   .get('/', all)
   /* TODO: Other HTTP methods. */
   // .post('/', add)
-   .get('/:id',dieren)
+  .get('/:id', dieren)
 
 
   // .put('/:id', set)
@@ -24,17 +24,17 @@ module.exports = express()
   .delete('/:id', remove)
   .listen(1902)
 
-  function all(req, res) {
-    var result = {
-      errors: [],
-      data: db.all()
-    }
-    /* Support both a request for JSON and a request for HTML  */
-    res.format({
-      json: () => res.json(result),
-      html: () => res.render('list.ejs', Object.assign({}, result, helpers))
-    })
+function all(req, res) {
+  var result = {
+    errors: [],
+    data: db.all()
   }
+  /* Support both a request for JSON and a request for HTML  */
+  res.format({
+    json: () => res.json(result),
+    html: () => res.render('list.ejs', Object.assign({}, result, helpers))
+  })
+}
 
 
 function dieren(req, res) {
@@ -45,45 +45,44 @@ function dieren(req, res) {
   try { //function to make sure that if the url contains anything but a number it throws an 404
     var anid = db.has(id)
   } catch (error) {
-    notFound(400,res)
+    notFound(400, res)
   }
-  if (anid){
-    var getId = {data: db.get(id)}
-     res.format({
-     json: () => res.json(getId),
-     html: () => res.render('detail.ejs', Object.assign({}, getId, helpers))
-   })
-
-  } else{
-    notFound(404,res)
-  }
- }
-// Function to bundle errors and then error.ejs sees what kind of error trough the first parameter
- function notFound(error, res){
-   var errorObject = {
-     errors: [{
-       id: error,
-       title: error
-     }]
-   }
-   res.status(error).render('error.ejs',errorObject)
- }
-
- function remove(req, res){ //Function to remove sweet animals
-   var id = req.params.id
-   try {
-     db.remove(id)
-     res.status(204)
-   } catch (error) {
-     if (db.removed(id)) {
-      res.status(410).json({message: 'That Animal has been removed 🐈'})
+  if (anid) {
+    var getId = {
+      data: db.get(id)
     }
-     else{
-       notFound(404,res)
-     }
-       }
-   }
- 
+    res.format({
+      json: () => res.json(getId),
+      html: () => res.render('detail.ejs', Object.assign({}, getId, helpers))
+    })
 
+  } else {
+    notFound(404, res)
+  }
+}
+// Function to bundle errors and then error.ejs sees what kind of error trough the first parameter
+function notFound(error, res) {
+  var errorObject = {
+    errors: [{
+      id: error,
+      title: error
+    }]
+  }
+  res.status(error).render('error.ejs', errorObject)
+}
 
+function remove(req, res) { //Function to remove sweet animals
+  var id = req.params.id
+
+  try {
+    db.remove(id)
+    res.status(204)
+  } catch (error) {
+    if (db.removed(id)) {
+      notFound(410, res)
+    } else {
+      notFound(404, res)
+    }
+  }
+}
 
