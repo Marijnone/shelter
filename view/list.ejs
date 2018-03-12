@@ -4,9 +4,13 @@
 <meta name=viewport content=width=device-width,initial-scale=1>
 <link rel="shortcut icon" type=image/x-icon href=data:image/x-icon;,>
 <title>Shelter</title>
+
 <link rel=stylesheet href=/index.css>
 <main>
   <h1>Shelter</h1>
+  <p>
+      <a href='/form.html'>Add a new Animal</a>
+    </p>
   <div class=grid>
     <% data.forEach(function (entity) { %>
     <article class=animal>
@@ -20,6 +24,7 @@
         <h2><%= entity.name %></h2>
         <p class=capitalize><%= entity.sex %> · <%= entity.age %> <%= plural('year', entity.age) %> old</p>
       </a>
+      
     </article>
     <% }) %>
   </div>

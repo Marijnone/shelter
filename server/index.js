@@ -4,14 +4,17 @@ var express = require('express')
 var db = require('../db')
 var helpers = require('./helpers')
 var path = require('path')
+var bodyParser = require('body-parser')
 
 module.exports = express()
   .set('view engine', 'ejs')
   .set('views', 'view')
   .use(express.static('static'))
+  .use(bodyParser.urlencoded({extended:true}))
   .use('/image', express.static('db/image'))
-
-
+  .post('/', form)
+  .get('/form',form)
+  
   // TODO: Serve the images in `db/image` on `/image`.
   .get('/', all)
   /* TODO: Other HTTP methods. */
@@ -23,6 +26,9 @@ module.exports = express()
   // .patch('/:id', change)
   .delete('/:id', remove)
   .listen(1902)
+
+
+
 
 function all(req, res) {
   var result = {
@@ -86,3 +92,6 @@ function remove(req, res) { //Function to remove sweet animals
   }
 }
 
+function form(req, res) {
+  res.render('form.html')
+}
