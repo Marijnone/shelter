@@ -5,6 +5,7 @@ var db = require('../db')
 var helpers = require('./helpers')
 var path = require('path')
 var bodyParser = require('body-parser')
+var slug = require('slug')
 
 module.exports = express()
   .set('view engine', 'ejs')
@@ -94,4 +95,29 @@ function remove(req, res) { //Function to remove sweet animals
 
 function form(req, res) {
   res.render('form.html')
+}
+
+function add(req, res) {
+
+  var input =({
+        name:req.body.name,
+        type:req.body.type,
+        place:req.body.place,
+        description:req.body.description,
+        sex:req.body.sex,
+        age:req.body.age,
+        size:req.body.size,
+        length:req.body.length,
+        vaccinated:req.body.vaccinated,
+        primaryColor:req.body.primaryColor,
+        weight:req.body.weight,
+        intake:req.body.intake
+  })
+}
+try {
+  db.add(input) //add the inputed data to the db
+} catch (error) {
+  console.log(error);
+  res.status(442)
+  
 }
