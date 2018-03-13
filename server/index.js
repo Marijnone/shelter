@@ -15,6 +15,7 @@ module.exports = express()
         extended: true
     }))
     .use('/image', express.static('db/image'))
+    .use(bodyParser.json())
     // .post('/', form)
     .get('/form', form)
     .get('/dier/:id', dieren) //thanks to Rijk van Zanten 
@@ -110,33 +111,27 @@ function add(req, res) {
         place: req.body.place,
         description: req.body.description,
         sex: req.body.sex,
-        age: req.body.age,
+        age: parseInt(req.body.age, 10),
         size: req.body.size,
         length: req.body.length,
-        vaccinated: req.body.vaccinated,
+        vaccinated: req.body.vaccinated == 1,
         primaryColor: req.body.primaryColor,
         secondaryColor: req.body.secondaryColor,
-        weight: req.body.weight,
+        weight: parseInt(req.body.weight, 10),
         intake: req.body.intake
     }
 
     try {
-        var dier = db.add(dier)
+        var dier = db.add(input)
         // db.add(input) //add the inputed data to the db
-        res.redirect('/' + dier.id)
-        console.log("New data..............................");
-        console.log(input);
+        res.redirect('/dier/' + dier.id)
+        console.log("New animal..............................");
     } catch (error) {
-        console.log(error)
-       notFound(422,res)
-       
+        console.log(error);
         
-
+        console.log(input)
+       notFound(422,res)
+    
     }
-//login the filled in form
-    console.log(req.body);
-    console.log("New data..............................");
-    console.log(input);
-    
-    
+      
 }
