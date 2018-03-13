@@ -12,7 +12,7 @@
     <h1>Add a new animal</h1>
     <form action=/ method=post>
     <label for="name">Name</label>
-    <input type="text">
+    <input name="name" type="text">
 <br>
     <label for="type">Type</label> <br>
 
@@ -44,14 +44,23 @@
         <input type="radio" name="declawed" value="yes"> yes <br>
         <input type="radio" name="declawed" value="no"> no <br>
 
-        <label for="primaryColor">primaryColor</label>
+        <label for="primaryColor">primary Color</label>
         <input type="text" name="primaryColor"> <br>
 
+        <label for="secondaryColor">secondary Color</label>
+        <input type="text" name="secondaryColor"> <br>
+
+        <label for="size">Size</label> <br>
+        <input  name="size" type="number"> <br>
+
+        <label for="length">Length</label> <br>
+        <input type="number" name="length"> <br>
+
         <label for="weight">weight</label>
-        <input type="number"><br>
+        <input type="number" name="weight"><br>
 
         <label for="intake">intake</label>
-        <input type="date"><br>
+        <input  type="date" name="intake"><br>
         
         <input type="submit" value="send"> 
     </form>

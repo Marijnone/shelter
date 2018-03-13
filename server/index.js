@@ -115,6 +115,7 @@ function add(req, res) {
         length: req.body.length,
         vaccinated: req.body.vaccinated,
         primaryColor: req.body.primaryColor,
+        secondaryColor: req.body.secondaryColor,
         weight: req.body.weight,
         intake: req.body.intake
     }
