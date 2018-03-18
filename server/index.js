@@ -140,7 +140,11 @@ function add(req, res) {
        
 
     }
- //thanks to Tim Ruiterkamp
+    console.log(input);
+    
+    
+    
+ //thanks to Tim Ruiterkamp for explaining and helping
     if (add.type === 'dog' || add.type === 'rabbit') {
         console.log('dog or rabbit')
         add.declawed = undefined
@@ -169,7 +173,7 @@ function add(req, res) {
        notFound(422,res)
     
     }
-    
+
      
       
 }
