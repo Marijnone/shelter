@@ -5,6 +5,8 @@ var db = require('../db')
 var helpers = require('./helpers')
 var path = require('path')
 var bodyParser = require('body-parser')
+var mysql = require('mysql')
+require('dotenv').config()
 
 
 module.exports = express()
@@ -18,8 +20,9 @@ module.exports = express()
     .use(bodyParser.json())
     // .post('/', form)
     .get('/form', form)
-    .get('/dier/:id', dieren) //thanks to Rijk van Zanten 
+    .get('/dier/:id', dieren) 
     .get('/', all)
+    
 
 
     // TODO: Serve the images in `db/image` on `/image`.
@@ -35,7 +38,7 @@ module.exports = express()
     .listen(1902)
 
 
-
+    console.log(process.env.DB_NAME) //check if .env is working it iss
 
 function all(req, res) {
     var result = {
@@ -133,5 +136,22 @@ function add(req, res) {
        notFound(422,res)
     
     }
+    console.log(host);
+    var connection = mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME
+    })
+    connection.connect()
+    
+    
+      console.log(connection);
+      console.log('Connection is made');
+    
+    console.log(process.env.DB_USER);
+    
+   
+      
       
 }
