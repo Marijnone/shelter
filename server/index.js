@@ -140,10 +140,6 @@ function add(req, res) {
        
 
     }
-    console.log(input);
-    
-    
-    
  //thanks to Tim Ruiterkamp for explaining and helping
     if (add.type === 'dog' || add.type === 'rabbit') {
         console.log('dog or rabbit')
@@ -159,7 +155,8 @@ function add(req, res) {
       if (add.secondaryColor === '' || add.secondaryColor === undefined) {
         add.secondaryColor = undefined
       }
-   
+      console.log(error);
+      
 
     try {
         var dier = db.add(input)
@@ -168,9 +165,12 @@ function add(req, res) {
         console.log("New animal..............................");
         console.log(input)
     } catch (error) {
-        console.log(error)
+        notFound(422,res)
+        console.log(error);
         
-       notFound(422,res)
+        console.log(input);
+        
+       
     
     }
 
