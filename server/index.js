@@ -22,9 +22,6 @@ module.exports = express()
     .get('/form', form)
     .get('/dier/:id', dieren) 
     .get('/', all)
-    
-
-
     // TODO: Serve the images in `db/image` on `/image`.
 
     /* TODO: Other HTTP methods. */
@@ -39,6 +36,23 @@ module.exports = express()
 
 
     console.log(process.env.DB_NAME) //check if .env is working it iss
+    console.log(process.env.DB_HOST);
+    
+    var connection = mysql.createConnection({
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME
+    });
+    connection.connect(function(err) {
+      if (err) throw err;
+      else {
+        console.log("Connected to MYSQL");
+      }
+    });
+    
+    //   console.log(connection);
+      
 
 function all(req, res) {
     var result = {
@@ -107,7 +121,7 @@ function form(req, res) {
 }
 
 function add(req, res) {
-
+   
     var input = {
         name: req.body.name,
         type: req.body.type,
@@ -118,40 +132,44 @@ function add(req, res) {
         size: req.body.size,
         length: req.body.length,
         vaccinated: req.body.vaccinated == 1,
+        declawed : req.body.declawed,
         primaryColor: req.body.primaryColor,
         secondaryColor: req.body.secondaryColor,
         weight: parseInt(req.body.weight, 10),
         intake: req.body.intake
+       
+
     }
+ //thanks to Tim Ruiterkamp
+    if (add.type === 'dog' || add.type === 'rabbit') {
+        console.log('dog or rabbit')
+        add.declawed = undefined
+        console.log(add.declawed)
+      }  else if (add.type === 'cat' || add.type != undefined) {
+        console.log('cat')
+        add.declawed = 'true'
+      } else {
+        add.declawed = undefined
+      }
+    
+      if (add.secondaryColor === '' || add.secondaryColor === undefined) {
+        add.secondaryColor = undefined
+      }
+   
 
     try {
         var dier = db.add(input)
         // db.add(input) //add the inputed data to the db
         res.redirect('/dier/' + dier.id)
         console.log("New animal..............................");
-    } catch (error) {
-        console.log(error);
-        
         console.log(input)
+    } catch (error) {
+        console.log(error)
+        
        notFound(422,res)
     
     }
-    console.log(host);
-    var connection = mysql.createConnection({
-        host: process.env.DB_HOST,
-        user: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_NAME
-    })
-    connection.connect()
     
-    
-      console.log(connection);
-      console.log('Connection is made');
-    
-    console.log(process.env.DB_USER);
-    
-   
-      
+     
       
 }
