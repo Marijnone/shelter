@@ -132,7 +132,7 @@ function add(req, res) {
         size: req.body.size,
         length: req.body.length,
         vaccinated: req.body.vaccinated == 1,
-        declawed : req.body.declawed,
+        declawed : req.body.declawed == 1,
         primaryColor: req.body.primaryColor,
         secondaryColor: req.body.secondaryColor,
         weight: parseInt(req.body.weight, 10),
@@ -147,7 +147,7 @@ function add(req, res) {
         console.log(add.declawed)
       }  else if (add.type === 'cat' || add.type != undefined) {
         console.log('cat')
-        add.declawed = 'true'
+        add.declawed = 'yes'
       } else {
         add.declawed = undefined
       }
@@ -155,7 +155,7 @@ function add(req, res) {
       if (add.secondaryColor === '' || add.secondaryColor === undefined) {
         add.secondaryColor = undefined
       }
-      console.log(error);
+    
       
 
     try {
