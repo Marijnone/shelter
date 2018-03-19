@@ -22,6 +22,7 @@ module.exports = express()
     .get('/form', form)
     .get('/dier/:id', dieren) 
     .get('/', all)
+
     // TODO: Serve the images in `db/image` on `/image`.
 
     /* TODO: Other HTTP methods. */
@@ -160,7 +161,6 @@ function add(req, res) {
 
     try {
         var dier = db.add(input)
-        // db.add(input) //add the inputed data to the db
         res.redirect('/dier/' + dier.id)
         console.log("New animal..............................");
         console.log(input)
@@ -168,12 +168,42 @@ function add(req, res) {
         notFound(422,res)
         console.log(error);
         
-        console.log(input);
+        
         
        
     
     }
+ //function to show animals 
+    function showAnimals(req, res, next){
+        connection.query('SELECT * FROM animals', done)
 
+
+        function done(err, data){
+            if (err){
+                next(err)
+            }else{
+                res.render('list.ejs')
+            }
+        }
+    }
+
+    function showAnimal(req,res,next){
+        var id = req.params.id
+
+        connection.query('SELECT * FROM animal, dier WHERE ID = ?', id, done)
+           
+    
+
+    function done(err, data){ //renders the data
+        if (err) {
+            next (err)
+        }else if (data.length === 0) {
+            next()
+        }else{
+            res.render('list.ejs', {data: data[0]})
+        }
+    }
+    }
     connection.query ('INSERT INTO animals ?',{
     name: req.body.name,
     type: req.body.type,
