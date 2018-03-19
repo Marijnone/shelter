@@ -141,19 +141,19 @@ function add(req, res) {
 
     }
  //thanks to Tim Ruiterkamp for explaining and helping
-    if (add.type === 'dog' || add.type === 'rabbit') {
+    if (input.type === 'dog' || input.type === 'rabbit') {
         console.log('dog or rabbit')
-        add.declawed = undefined
-        console.log(add.declawed)
-      }  else if (add.type === 'cat' || add.type != undefined) {
+        input.declawed = undefined
+        console.log(input.declawed)
+      }  else if (input.type === 'cat' && input.type != 0) {
         console.log('cat')
-        add.declawed = 'yes'
+        input.declawed = true
       } else {
-        add.declawed = undefined
+        input.declawed = false
       }
     
-      if (add.secondaryColor === '' || add.secondaryColor === undefined) {
-        add.secondaryColor = undefined
+      if (input.secondaryColor === '' || input.secondaryColor === undefined) {
+        input.secondaryColor = undefined
       }
     
       
