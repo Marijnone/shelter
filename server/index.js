@@ -174,6 +174,24 @@ function add(req, res) {
     
     }
 
-     
-      
+    connection.query ('INSERT INTO animals ?',{
+    name: req.body.name,
+    type: req.body.type,
+    place: req.body.place,
+    description: req.body.description,
+    sex: req.body.sex,
+    age: parseInt(req.body.age, 10),
+    size: req.body.size,
+    length: req.body.length,
+    vaccinated: req.body.vaccinated == 1,
+    declawed : req.body.declawed == 1,
+    primaryColor: req.body.primaryColor,
+    secondaryColor: req.body.secondaryColor,
+    weight: parseInt(req.body.weight, 10),
+    intake: req.body.intake
+    }, done)
+
+    
+
+
 }
