@@ -27,7 +27,7 @@ module.exports = express()
   // TODO: Serve the images in `db/image` on `/image`.
 
   /* TODO: Other HTTP methods. */
-  .post("/", add)
+  .post("/", addToDB)
 
   // .put('/:id', set)
   // .patch('/:id', change)
@@ -38,6 +38,7 @@ console.log(process.env.DB_NAME); //check if .env is working it iss
 console.log(process.env.DB_HOST);
 
 var connection = mysql.createConnection({
+  debug: true, //method to enable sql to print out debug info which is best thing 
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
@@ -45,8 +46,8 @@ var connection = mysql.createConnection({
 });
 
 connection.connect(function(err) {
-  if (err) throw err;
-  else {
+  if (err) throw (err)
+ else {
     console.log("Connected to MYSQL");
   }
 });
@@ -119,23 +120,7 @@ function form(req, res) {
   res.render("form.ejs");
 }
 
-function add(req, res) {
-  var input = {
-    name: req.body.name,
-    type: req.body.type,
-    place: req.body.place,
-    description: req.body.description,
-    sex: req.body.sex,
-    age: parseInt(req.body.age, 10),
-    size: req.body.size,
-    length: req.body.length,
-    vaccinated: req.body.vaccinated == 1,
-    declawed: req.body.declawed == 1,
-    primaryColor: req.body.primaryColor,
-    secondaryColor: req.body.secondaryColor,
-    weight: parseInt(req.body.weight, 10),
-    intake: req.body.intake
-  };
+
   //function to show animals
   function showAnimals(req, res, next) {
     connection.query("SELECT * FROM animals", done);
@@ -155,13 +140,13 @@ function add(req, res) {
     connection.query("SELECT * FROM animal, dier WHERE ID = ?", id, done); //function to shwo animal
 
     function done(err, data) {
-      //renders the data
+    
       if (err) {
         next(err);
       } else if (data.length === 0) {
         next();
       } else {
-        res.render("list.ejs", { data: data[0] });
+         res.render("list.ejs", Object.assign({}, helpers, {data:data}));
       }
     }
   }
@@ -170,8 +155,8 @@ function add(req, res) {
     var input;
 
     connection.query(
-      "INSERT INTO animals dier SET ?",
-      (input = {
+      "INSERT INTO dier SET ?",
+        input = {
         name: req.body.name,
         type: req.body.type,
         place: req.body.place,
@@ -186,10 +171,10 @@ function add(req, res) {
         secondaryColor: req.body.secondaryColor,
         weight: parseInt(req.body.weight, 10),
         intake: req.body.intake
-      }),
-      done
-    );
-  }
+      },done,)
+      
+  
+  
     //thanks to Tim Ruiterkamp for explaining and helping
     if (input.type === "dog" || input.type === "rabbit") {
       console.log("dog or rabbit");
@@ -220,9 +205,10 @@ function add(req, res) {
       console.log("New animal..............................");
       console.log(input);
     } catch (error) {
-      notFound(422, res);
+      // notFound(422, res);
       console.log(error);
-      console.log(err);
+      // console.log(err);
     }
   }
+
 
