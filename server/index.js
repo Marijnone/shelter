@@ -54,7 +54,7 @@ connection.connect(function(err) {
 
 
   function all(req, res, next) {
-    connection.query("SELECT * FROM animals", done);
+    connection.query("SELECT * FROM dier", done);
 
     function done(err, data) {
       if (err) {
@@ -145,7 +145,7 @@ function form(req, res) {
       } else if (data.length === 0) {
         next();
       } else {
-         res.render("detail.ejs", Object.assign({}, helpers, {data:data}));
+         res.render("detail.ejs", Object.assign({}, helpers, {data:data[0]}));
       }
     }
   }
@@ -171,7 +171,7 @@ function form(req, res) {
         secondaryColor: req.body.secondaryColor,
         weight: parseInt(req.body.weight, 10),
         intake: req.body.intake
-      },done,)
+      },done)
       
   
   
@@ -195,9 +195,11 @@ function form(req, res) {
       if (err) {
         next(err);
       } else {
-        // res.redirect("/dier/" + data.insertId);
-
-        // res.render("detail.ejs", Object.assign({}, helpers, {data:data}));
+        res.redirect('/dier/' + data.insertId);
+        console.log(err);
+        console.log(data.insertId);
+        
+        
 
       }
     }
