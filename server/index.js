@@ -21,7 +21,7 @@ module.exports = express()
   .use(bodyParser.json())
   // .post('/', form)
   .get("/form", form)
-  .get("/dier/:id", dieren)
+  .get("/dier/:id", showAnimal)
   .get("/", all)
 
   // TODO: Serve the images in `db/image` on `/image`.
@@ -38,7 +38,7 @@ console.log(process.env.DB_NAME); //check if .env is working it iss
 console.log(process.env.DB_HOST);
 
 var connection = mysql.createConnection({
-  debug: true, //method to enable sql to print out debug info which is best thing 
+  // debug: true, //method to enable sql to print out debug info which is best thing 
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
@@ -52,53 +52,62 @@ connection.connect(function(err) {
   }
 });
 
-function all(req, res) {
-  var result = {
-    errors: [],
-    data: db.all()
-  };
-  /* Support both a request for JSON and a request for HTML  */
-  res.format({
-    json: () => res.json(result),
-    html: () => res.render("list.ejs", Object.assign({}, result, helpers))
-  });
-}
 
-function dieren(req, res) {
-  console.log(req.params.id);
-  var id = req.params.id;
-  var anid;
+  function all(req, res, next) {
+    connection.query("SELECT * FROM animals", done);
 
-  try {
-    //function to make sure that if the url contains anything but a number it throws an 404
-    var anid = db.has(id);
-  } catch (error) {
-    notFound(400, res);
-  }
-  if (anid) {
-    var getId = {
-      data: db.get(id)
-    };
-    res.format({
-      json: () => res.json(getId),
-      html: () => res.render("detail.ejs", Object.assign({}, getId, helpers))
-    });
-  } else {
-    notFound(404, res);
-  }
-}
-// Function to bundle errors and then error.ejs sees what kind of error trough the first parameter
-function notFound(error, res) {
-  var errorObject = {
-    errors: [
-      {
-        id: error,
-        title: error
+    function done(err, data) {
+      if (err) {
+        next(err);
+      } else {
+        res.render("list.ejs", Object.assign({}, helpers, {data:data}));
       }
-    ]
-  };
-  res.status(error).render("error.ejs", errorObject);
-}
+    }
+  }
+
+
+//   /* Support both a request for JSON and a request for HTML  */
+//   res.format({
+//     json: () => res.json(result),
+//     html: () => res.render("list.ejs", Object.assign({}, result, helpers))
+//   });
+// }
+
+// function dieren(req, res) {
+//   console.log(req.params.id);
+//   var id = req.params.id;
+//   var anid;
+
+//   try {
+//     //function to make sure that if the url contains anything but a number it throws an 404
+//     var anid = db.has(id);
+//   } catch (error) {
+//     notFound(400, res);
+//   }
+//   if (anid) {
+//     var getId = {
+//       data: db.get(id)
+//     };
+//     res.format({
+//       json: () => res.json(getId),
+//       html: () => res.render("detail.ejs", Object.assign({}, getId, helpers))
+//     });
+//   } else {
+//     notFound(404, res);
+//   }
+// }
+// // Function to bundle errors and then error.ejs sees what kind of error trough the first parameter
+// function notFound(error, res) {
+//   var errorObject = {
+//     errors: [
+//       {
+//         id: error,
+//         title: error
+//       }
+//     ]
+//   };
+//   res.status(error).render("error.ejs", errorObject);
+// }
 
 function remove(req, res) {
   //Function to remove sweet animals
@@ -122,22 +131,12 @@ function form(req, res) {
 
 
   //function to show animals
-  function showAnimals(req, res, next) {
-    connection.query("SELECT * FROM animals", done);
 
-    function done(err, data) {
-      if (err) {
-        next(err);
-      } else {
-        res.render("list.ejs", Object.assign({}, helpers, {data:data}));
-      }
-    }
-  }
 
   function showAnimal(req, res, next) {
     var id = req.params.id;
 
-    connection.query("SELECT * FROM animal, dier WHERE ID = ?", id, done); //function to shwo animal
+    connection.query("SELECT * FROM dier WHERE ID = ?", id, done); //function to shwo animal
 
     function done(err, data) {
     
@@ -146,14 +145,15 @@ function form(req, res) {
       } else if (data.length === 0) {
         next();
       } else {
-         res.render("list.ejs", Object.assign({}, helpers, {data:data}));
+         res.render("detail.ejs", Object.assign({}, helpers, {data:data}));
       }
     }
   }
 
   function addToDB(req, res, next) { //function to add input to sql
     var input;
-
+    
+    
     connection.query(
       "INSERT INTO dier SET ?",
         input = {
@@ -195,20 +195,27 @@ function form(req, res) {
       if (err) {
         next(err);
       } else {
-        res.redirect("/dier" + data.insertId);
+        // res.redirect("/dier/" + data.insertId);
+
+        // res.render("detail.ejs", Object.assign({}, helpers, {data:data}));
+
       }
     }
-
-    try {
-      var dier = addToDB(input);
-      res.redirect("/dier" + data.insertId);
-      console.log("New animal..............................");
-      console.log(input);
-    } catch (error) {
-      // notFound(422, res);
-      console.log(error);
-      // console.log(err);
-    }
   }
+
+//     try {
+//       var dier = addToDB(input);
+      
+//       res.redirect("/dier/" + data.insertId);
+//       console.log("New animal..............................");
+//       console.log(input);
+//       console.log();
+      
+//     } catch (error) {
+//       // notFound(422, res);
+//       console.log(error);
+//       // console.log(err);
+//     }
+//   }
 
 
