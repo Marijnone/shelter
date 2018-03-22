@@ -89,8 +89,8 @@ function dieren(req, res) {
 
   if (anid === NaN) {
     notFound(400, res);
-  } {
-
+  } 
+} //closing dieren
 
 
     // } else {
@@ -207,5 +207,5 @@ function dieren(req, res) {
         }
       }
     }
-  }
-}
+  
+
