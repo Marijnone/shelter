@@ -14,9 +14,7 @@ DB_PASSWORD=
 ```
 5. then Open the terminal navigate to shelter run ```npm start```, open up another tab and run ```sudo service mysql start``` to start mysql
 
-I found it pretty hard to debug sql and after googling around found the ```debug:true``` option which makes it easier to debug your sql queries. With that turned on i could see which table names where incorrect or had the wrong data types. Got the delete function working which was kinda complex but looking at the slides and working with classmates. Only thing i could not figure out was how to get my db working with a second table using left joins. Also could not manage to export my db?? tried the example as given in de assingment. But ofcourse SQL keeps giving me errors. I do have this image ![db](https://imgur.com/lLpcpNI.jpg)
 
-[link to repo](https://github.com/Marijnone/shelter)
 
 # Shelter
 
