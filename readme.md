@@ -1,5 +1,23 @@
 <!-- lint disable no-html -->
 
+# Storage  
+
+1. ```npm install mysql``` run trough the installer and dont forget your password
+2. ```npm install dotenv --save``` this will install dotenv
+3. ```require("dotenv").config(); ```  add .env to your gitignore
+4. In order to get the DB working you need to use a .ENV file including
+```
+DB_HOST=
+DB_USER=
+DB_NAME=
+DB_PASSWORD=
+```
+5. then Open the terminal navigate to shelter run ```npm start```, open up another tab and run ```sudo service mysql start``` to start mysql
+
+I found it pretty hard to debug sql and after googling around found the ```debug:true``` option which makes it easier to debug your sql queries. With that turned on i could see which table names where incorrect or had the wrong data types. Got the delete function working which was kinda complex but looking at the slides and working with classmates. Only thing i could not figure out was how to get my db working with a second table using left joins. Also could not manage to export my db?? tried the example as given in de assingment. But ofcourse SQL keeps giving me errors. I do have this image ![db](https://imgur.com/lLpcpNI.jpg)
+
+[link to repo](https://github.com/Marijnone/shelter)
+
 # Shelter
 
 > A partially working Express server.
