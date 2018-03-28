@@ -25,7 +25,7 @@ if (remove.length) {
     button.addEventListener('click', onremove)
   })
 }
-
+//function te remove animals
 function onremove(ev) {
   var node = ev.target
   var id = node.dataset.id

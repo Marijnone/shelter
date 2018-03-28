@@ -57,24 +57,17 @@ function all(req, res, next) {
 
   function done(err, data) {
     if (err) {
-      next(err);
+      next(err)
     } else {
       res.render(
         "list.ejs",
         Object.assign({}, helpers, {
           data: data
         })
-      );
+      )
     }
   }
 }
-
-//   /* Support both a request for JSON and a request for HTML  */
-//   res.format({
-//     json: () => res.json(result),
-//     html: () => res.render("list.ejs", Object.assign({}, result, helpers))
-//   });
-// }
 
 function dieren(req, res) {
   console.log(req.params.id);
